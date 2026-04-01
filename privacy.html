@@ -1,312 +1,255 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>隐私声明 - 密码钱包(PassWallet)</title>
-    <style>
-        :root {
-            --primary: #0A84FF;
-            --secondary: #30D158;
-            --accent: #FF9F0A;
-            --bg: #0A0E14;
-            --surface: #131A24;
-            --surface-2: #1C2430;
-            --text-primary: #FFFFFF;
-            --text-secondary: #8E9AAF;
-            --text-tertiary: #5C6370;
-            --border: rgba(255, 255, 255, 0.08);
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { font-size: 16px; scroll-behavior: smooth; }
-        body {
-            font-family: "PingFang SC", "Hiragino Sans GB", "Noto Sans CJK SC",
-                   "Heiti SC", -apple-system, "Helvetica Neue", Arial, sans-serif;
-            background-color: var(--bg);
-            color: var(--text-primary);
-            line-height: 1.75;
-            -webkit-font-smoothing: antialiased;
-            overflow-x: hidden;
-        }
-
-        /* Hero */
-        .hero {
-            position: relative;
-            min-height: 44vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 80px 24px 56px;
-            overflow: hidden;
-        }
-        .hero::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background:
-                radial-gradient(ellipse 70% 50% at 50% 0%, rgba(10, 132, 255, 0.18) 0%, transparent 60%),
-                radial-gradient(ellipse 50% 40% at 30% 100%, rgba(48, 209, 88, 0.08) 0%, transparent 50%);
-            pointer-events: none;
-        }
-        .hero-icon {
-            width: 72px;
-            height: 72px;
-            background: var(--surface);
-            border-radius: 22px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 28px;
-            border: 1px solid var(--border);
-            box-shadow: 0 0 40px rgba(10, 132, 255, 0.15);
-            position: relative;
-            z-index: 1;
-        }
-        .hero-icon svg { width: 36px; height: 36px; color: var(--primary); }
-        .hero h1 {
-            font-size: 2rem;
-            font-weight: 700;
-            letter-spacing: -0.02em;
-            margin-bottom: 12px;
-            position: relative;
-            z-index: 1;
-        }
-        .hero p {
-            font-size: 1rem;
-            color: var(--text-secondary);
-            max-width: 400px;
-            position: relative;
-            z-index: 1;
-        }
-        .update-date {
-            margin-top: 16px;
-            font-size: 0.8125rem;
-            color: var(--text-tertiary);
-            padding: 6px 16px;
-            background: var(--surface);
-            border-radius: 20px;
-            border: 1px solid var(--border);
-            position: relative;
-            z-index: 1;
-        }
-
-        .container { max-width: 680px; margin: 0 auto; padding: 0 20px 80px; }
-        .section { margin-bottom: 48px; }
-        .section-header { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; }
-        .section-icon {
-            width: 44px; height: 44px; min-width: 44px;
-            border-radius: 12px; display: flex; align-items: center; justify-content: center;
-            font-size: 1.25rem;
-        }
-        .section-icon.blue { background: rgba(10, 132, 255, 0.15); }
-        .section-icon.green { background: rgba(48, 209, 88, 0.15); }
-        .section-icon.orange { background: rgba(255, 159, 10, 0.15); }
-        .section-icon.purple { background: rgba(159, 109, 255, 0.15); }
-        .section h2 { font-size: 1.1875rem; font-weight: 600; letter-spacing: -0.01em; }
-
-        .card {
-            background: var(--surface);
-            border-radius: 16px;
-            padding: 24px;
-            border: 1px solid var(--border);
-            margin-bottom: 16px;
-        }
-        .card h3 { font-size: 1rem; font-weight: 600; margin-bottom: 10px; }
-        .card p { font-size: 0.9375rem; color: var(--text-secondary); }
-
-        .feature-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
-        .feature-list li { display: flex; align-items: flex-start; gap: 14px; font-size: 0.9375rem; color: var(--text-secondary); }
-        .feature-list .check {
-            width: 22px; height: 22px; min-width: 22px;
-            border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            font-size: 0.75rem; color: white; margin-top: 2px;
-        }
-        .feature-list .check.green { background: var(--secondary); }
-        .feature-list .check.blue { background: var(--primary); }
-        .feature-list .check.orange { background: var(--accent); }
-        .feature-list strong { color: var(--text-primary); }
-
-        .divider { height: 1px; background: var(--border); margin: 48px 0; }
-
-        .footer { text-align: center; padding: 40px 24px; border-top: 1px solid var(--border); }
-        .footer-brand { font-size: 0.9375rem; font-weight: 600; margin-bottom: 6px; }
-        .footer p { font-size: 0.8125rem; color: var(--text-tertiary); }
-
-        .summary-box {
-            background: linear-gradient(135deg, rgba(10, 132, 255, 0.1), rgba(48, 209, 88, 0.08));
-            border: 1px solid rgba(10, 132, 255, 0.2);
-            border-radius: 16px;
-            padding: 24px;
-            margin-bottom: 48px;
-        }
-        .summary-box h3 { font-size: 1rem; font-weight: 600; margin-bottom: 16px; color: var(--primary); }
-        .summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .summary-item { display: flex; align-items: center; gap: 10px; font-size: 0.875rem; color: var(--text-secondary); }
-
-        .fade-section { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
-        .fade-section.visible { opacity: 1; transform: translateY(0); }
-
-        @media (max-width: 480px) {
-            .hero { min-height: 38vh; padding: 60px 20px 36px; }
-            .hero h1 { font-size: 1.625rem; }
-            .summary-grid { grid-template-columns: 1fr; }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>隐私声明 - 密码钱包(PassWallet)</title>
+  <style>
+    :root {
+      --primary: #0A84FF;      --secondary: #30D158;      --accent: #FF9F0A;      --bg: #0A0E14;      --surface: #131A24;      --surface-2: #1C2430;      --text-primary: #FFFFFF;      --text-secondary: #8E9AAF;      --text-tertiary: #5C6370;      --border: rgba(255, 255, 255, 0.08);    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html {
+      font-size: 16px;      scroll-behavior: smooth;      -webkit-text-size-adjust: 100%;    }
+    body {
+      font-family: "PingFang SC", "Hiragino Sans GB", "Noto Sans CJK SC",
+                   "Microsoft YaHei", -apple-system, BlinkMacSystemFont,
+                   "Helvetica Neue", Arial, sans-serif;      background-color: var(--bg);      color: var(--text-primary);      line-height: 1.75;      -webkit-font-smoothing: antialiased;      overflow-x: hidden;    }
+    .icon {
+      width: 1em;      height: 1em;      fill: none;      stroke: currentColor;      stroke-width: 2;      stroke-linecap: round;      stroke-linejoin: round;      display: inline-block;      vertical-align: -0.12em;      flex-shrink: 0;    }
+    /* Hero */
+    .hero {
+      position: relative;      min-height: 44vh;      display: flex;      flex-direction: column;      align-items: center;      justify-content: center;      text-align: center;      padding: 80px 24px 56px;      overflow: hidden;    }
+    .hero::before {
+      content: "";      position: absolute;      inset: 0;      background:
+        radial-gradient(ellipse 70% 50% at 50% 0%, rgba(10, 132, 255, 0.18) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 40% at 30% 100%, rgba(48, 209, 88, 0.08) 0%, transparent 50%);      pointer-events: none;    }
+    .hero-icon {
+      width: 72px;      height: 72px;      background: var(--surface);      border-radius: 22px;      display: flex;      align-items: center;      justify-content: center;      margin-bottom: 28px;      border: 1px solid var(--border);      box-shadow: 0 0 40px rgba(10, 132, 255, 0.15);      position: relative;      z-index: 1;    }
+    .hero-icon svg { width: 36px; height: 36px; color: var(--primary); }
+    .hero h1 {
+      font-size: 2rem;      font-weight: 700;      letter-spacing: -0.02em;      margin-bottom: 12px;      position: relative;      z-index: 1;    }
+    .hero p {
+      font-size: 1rem;      color: var(--text-secondary);      max-width: 400px;      position: relative;      z-index: 1;    }
+    .update-date {
+      margin-top: 16px;      font-size: 0.8125rem;      color: var(--text-tertiary);      padding: 6px 16px;      background: var(--surface);      border-radius: 20px;      border: 1px solid var(--border);      position: relative;      z-index: 1;    }
+    .container { max-width: 680px; margin: 0 auto; padding: 0 20px 80px; }
+    .section { margin-bottom: 48px; }
+    .section-header { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; }
+    .section-icon {
+      width: 44px;      height: 44px;      min-width: 44px;      border-radius: 12px;      display: flex;      align-items: center;      justify-content: center;    }
+    .section-icon .icon { width: 20px; height: 20px; }
+    .section-icon.blue { background: rgba(10, 132, 255, 0.15); color: #6fb5ff; }
+    .section-icon.green { background: rgba(48, 209, 88, 0.15); color: #78e79e; }
+    .section-icon.orange { background: rgba(255, 159, 10, 0.15); color: #ffc06b; }
+    .section-icon.purple { background: rgba(159, 109, 255, 0.15); color: #c8a9ff; }
+    .section h2 { font-size: 1.1875rem; font-weight: 600; letter-spacing: -0.01em; }
+    .card {
+      background: var(--surface);      border-radius: 16px;      padding: 24px;      border: 1px solid var(--border);      margin-bottom: 16px;    }
+    .card h3 { font-size: 1rem; font-weight: 600; margin-bottom: 10px; }
+    .card p { font-size: 0.9375rem; color: var(--text-secondary); }
+    .feature-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+    .feature-list li { display: flex; align-items: flex-start; gap: 14px; font-size: 0.9375rem; color: var(--text-secondary); }
+    .feature-list .check {
+      width: 22px;      height: 22px;      min-width: 22px;      border-radius: 50%;      display: flex;      align-items: center;      justify-content: center;      margin-top: 2px;      color: #fff;    }
+    .feature-list .check .icon { width: 12px; height: 12px; stroke: #fff; }
+    .feature-list .check.green { background: var(--secondary); }
+    .feature-list .check.blue { background: var(--primary); }
+    .feature-list .check.orange { background: var(--accent); }
+    .feature-list strong { color: var(--text-primary); }
+    .divider { height: 1px; background: var(--border); margin: 48px 0; }
+    .footer { text-align: center; padding: 40px 24px; border-top: 1px solid var(--border); }
+    .footer-brand { font-size: 0.9375rem; font-weight: 600; margin-bottom: 6px; }
+    .footer p { font-size: 0.8125rem; color: var(--text-tertiary); }
+    .summary-box {
+      background: linear-gradient(135deg, rgba(10, 132, 255, 0.1), rgba(48, 209, 88, 0.08));      border: 1px solid rgba(10, 132, 255, 0.2);      border-radius: 16px;      padding: 24px;      margin-bottom: 48px;    }
+    .summary-box h3 { font-size: 1rem; font-weight: 600; margin-bottom: 16px; color: var(--primary); }
+    .summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .summary-item { display: flex; align-items: center; gap: 10px; font-size: 0.875rem; color: var(--text-secondary); }
+    .summary-item .icon { width: 16px; height: 16px; color: var(--secondary); }
+    .fade-section { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .fade-section.visible { opacity: 1; transform: translateY(0); }
+    @media (max-width: 480px) {
+      .hero { min-height: 38vh; padding: 60px 20px 36px; }
+      .hero h1 { font-size: 1.625rem; }
+      .summary-grid { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
-
-<section class="hero">
+  <!-- SVG Sprite -->
+  <svg aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="i-phone" viewBox="0 0 24 24">
+      <rect x="7" y="2" width="10" height="20" rx="2"></rect>
+      <line x1="12" y1="18" x2="12.01" y2="18"></line>
+    </symbol>
+    <symbol id="i-ban" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="10"></circle>
+      <line x1="5" y1="5" x2="19" y2="19"></line>
+    </symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24">
+      <rect x="5" y="11" width="14" height="10" rx="2"></rect>
+      <path d="M8 11V7a4 4 0 0 1 8 0v4"></path>
+    </symbol>
+    <symbol id="i-db" viewBox="0 0 24 24">
+      <ellipse cx="12" cy="5" rx="8" ry="3"></ellipse>
+      <path d="M4 5v6c0 1.66 3.58 3 8 3s8-1.34 8-3V5"></path>
+      <path d="M4 11v6c0 1.66 3.58 3 8 3s8-1.34 8-3v-6"></path>
+    </symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24">
+      <polyline points="23 4 23 10 17 10"></polyline>
+      <polyline points="1 20 1 14 7 14"></polyline>
+      <path d="M3.5 9A9 9 0 0 1 17.6 5.6L23 10M1 14l5.4 4.4A9 9 0 0 0 20.5 15"></path>
+    </symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24">
+      <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+      <polyline points="3 7 12 13 21 7"></polyline>
+    </symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24">
+      <path d="M21 11.5A8.5 8.5 0 0 1 12.5 20H6l-3 3v-6.5A8.5 8.5 0 1 1 21 11.5z"></path>
+    </symbol>
+    <symbol id="i-check" viewBox="0 0 24 24">
+      <path d="M20 6L9 17l-5-5"></path>
+    </symbol>
+    <symbol id="i-check-circle" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="10"></circle>
+      <path d="m9 12 2 2 4-4"></path>
+    </symbol>
+    <symbol id="i-x" viewBox="0 0 24 24">
+      <line x1="18" y1="6" x2="6" y2="18"></line>
+      <line x1="6" y1="6" x2="18" y2="18"></line>
+    </symbol>
+    <symbol id="i-arrow-right" viewBox="0 0 24 24">
+      <line x1="5" y1="12" x2="19" y2="12"></line>
+      <polyline points="12 5 19 12 12 19"></polyline>
+    </symbol>
+  </svg>
+  <section class="hero">
     <div class="hero-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-        </svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+      </svg>
     </div>
     <h1>隐私声明</h1>
     <p>PassWallet 致力于在完全离线的基础上保护您的数字资产安全</p>
     <span class="update-date">最近更新：2026 年 3 月</span>
-</section>
-
-<div class="container">
-
+  </section>
+  <div class="container">
     <div class="summary-box fade-section">
-        <h3>核心承诺</h3>
-        <div class="summary-grid">
-            <div class="summary-item"><span>✅</span><span>数据完全存储在本地设备</span></div>
-            <div class="summary-item"><span>✅</span><span>无任何网络请求或上传</span></div>
-            <div class="summary-item"><span>✅</span><span>主密码本地加密，不传输</span></div>
-            <div class="summary-item"><span>✅</span><span>您拥有全部数据控制权</span></div>
-        </div>
+      <h3>核心承诺</h3>
+      <div class="summary-grid">
+        <div class="summary-item"><span><svg class="icon"><use href="#i-check-circle"/></svg></span><span>数据完全存储在本地设备</span></div>
+        <div class="summary-item"><span><svg class="icon"><use href="#i-check-circle"/></svg></span><span>无任何网络请求或上传</span></div>
+        <div class="summary-item"><span><svg class="icon"><use href="#i-check-circle"/></svg></span><span>主密码本地加密，不传输</span></div>
+        <div class="summary-item"><span><svg class="icon"><use href="#i-check-circle"/></svg></span><span>您拥有全部数据控制权</span></div>
+      </div>
     </div>
-
     <div class="section fade-section">
-        <div class="section-header">
-            <div class="section-icon blue">📱</div>
-            <h2>我们收集什么？</h2>
-        </div>
-        <p style="color: var(--text-secondary); margin-bottom: 16px; font-size: 0.9375rem;">
-            简短回答：<strong style="color: var(--secondary);">几乎不收集任何内容。</strong> PassWallet 是一款完全本地化的应用，您的数据永远不会离开您的设备。
-        </p>
-        <div class="card">
-            <h3>为了正常运行，我们仅处理：</h3>
-            <ul class="feature-list" style="margin-top: 12px;">
-                <li><span class="check green">✓</span><span>您主动输入的账户密码、银行卡信息、证件号码、安全笔记等数据（<strong>均存储在本地</strong>，仅您可见）</span></li>
-                <li><span class="check green">✓</span><span>您设置的主密码（<strong>使用 AES-256 本地加密存储</strong>，服务端无法解密）</span></li>
-                <li><span class="check green">✓</span><span>如果您开启生物识别解锁，系统会调用 Face ID / Touch ID 进行本地身份验证（<strong>我们不获取或存储生物特征数据</strong>）</span></li>
-                <li><span class="check green">✓</span><span>设备上生成的匿名崩溃日志（<strong>不含任何您输入的内容</strong>，仅用于提升应用稳定性）</span></li>
-            </ul>
-        </div>
+      <div class="section-header">
+        <div class="section-icon blue"><svg class="icon"><use href="#i-phone"/></svg></div>
+        <h2>我们收集什么？</h2>
+      </div>
+      <p style="color: var(--text-secondary); margin-bottom: 16px; font-size: 0.9375rem;">
+        简短回答：<strong style="color: var(--secondary);">几乎不收集任何内容。</strong> PassWallet 是一款完全本地化的应用，您的数据永远不会离开您的设备。      </p>
+      <div class="card">
+        <h3>为了正常运行，我们仅处理：</h3>
+        <ul class="feature-list" style="margin-top: 12px;">
+          <li><span class="check green"><svg class="icon"><use href="#i-check"/></svg></span><span>您主动输入的账户密码、银行卡信息、证件号码、安全笔记等数据（<strong>均存储在本地</strong>，仅您可见）</span></li>
+          <li><span class="check green"><svg class="icon"><use href="#i-check"/></svg></span><span>您设置的主密码（<strong>使用 AES-256 本地加密存储</strong>，服务端无法解密）</span></li>
+          <li><span class="check green"><svg class="icon"><use href="#i-check"/></svg></span><span>如果您开启生物识别解锁，系统会调用 Face ID / Touch ID 进行本地身份验证（<strong>我们不获取或存储生物特征数据</strong>）</span></li>
+          <li><span class="check green"><svg class="icon"><use href="#i-check"/></svg></span><span>设备上生成的匿名崩溃日志（<strong>不含任何您输入的内容</strong>，仅用于提升应用稳定性）</span></li>
+        </ul>
+      </div>
     </div>
-
     <div class="divider"></div>
-
     <div class="section fade-section">
-        <div class="section-header">
-            <div class="section-icon green">🚫</div>
-            <h2>我们不做什么？</h2>
-        </div>
-        <div class="card" style="border-color: rgba(48, 209, 88, 0.2);">
-            <h3 style="color: var(--secondary);">以下是我们永远不会做的事：</h3>
-            <ul class="feature-list" style="margin-top: 14px;">
-                <li><span class="check orange">✗</span><span>不收集、不上传任何密码或个人信息</span></li>
-                <li><span class="check orange">✗</span><span>不使用任何第三方追踪器或分析 SDK</span></li>
-                <li><span class="check orange">✗</span><span>不连接任何服务器或云服务（完全离线）</span></li>
-                <li><span class="check orange">✗</span><span>不收集设备标识符、位置信息或通讯录</span></li>
-                <li><span class="check orange">✗</span><span>不显示任何广告或推送通知</span></li>
-                <li><span class="check orange">✗</span><span>不将您的数据用于任何形式的分析或训练</span></li>
-            </ul>
-        </div>
+      <div class="section-header">
+        <div class="section-icon green"><svg class="icon"><use href="#i-ban"/></svg></div>
+        <h2>我们不做什么？</h2>
+      </div>
+      <div class="card" style="border-color: rgba(48, 209, 88, 0.2);">
+        <h3 style="color: var(--secondary);">以下是我们永远不会做的事：</h3>
+        <ul class="feature-list" style="margin-top: 14px;">
+          <li><span class="check orange"><svg class="icon"><use href="#i-x"/></svg></span><span>不收集、不上传任何密码或个人信息</span></li>
+          <li><span class="check orange"><svg class="icon"><use href="#i-x"/></svg></span><span>不使用任何第三方追踪器或分析 SDK</span></li>
+          <li><span class="check orange"><svg class="icon"><use href="#i-x"/></svg></span><span>不连接任何服务器或云服务（完全离线）</span></li>
+          <li><span class="check orange"><svg class="icon"><use href="#i-x"/></svg></span><span>不收集设备标识符、位置信息或通讯录</span></li>
+          <li><span class="check orange"><svg class="icon"><use href="#i-x"/></svg></span><span>不显示任何广告或推送通知</span></li>
+          <li><span class="check orange"><svg class="icon"><use href="#i-x"/></svg></span><span>不将您的数据用于任何形式的分析或训练</span></li>
+        </ul>
+      </div>
     </div>
-
     <div class="divider"></div>
-
     <div class="section fade-section">
-        <div class="section-header">
-            <div class="section-icon orange">🔐</div>
-            <h2>数据安全如何保障？</h2>
-        </div>
-        <div class="card">
-            <h3>AES-256 加密</h3>
-            <p>您的所有敏感数据均使用 <strong style="color: var(--accent);">AES-256</strong> 算法进行本地加密。这意味着即使设备落入他人手中，未经您的主密码解锁，数据仍然完全不可读。</p>
-        </div>
-        <div class="card">
-            <h3>主密码保护</h3>
-            <p>主密码在设备本地经过 <strong style="color: var(--accent);">PBKDF2</strong> 密钥导出处理后，再用于加密您的数据。我们不会将主密码以任何形式传输、上传或存储。</p>
-        </div>
-        <div class="card">
-            <h3>生物识别安全</h3>
-            <p>Face ID / Touch ID 仅用于在您设备本地验证身份。生物特征数据由系统 Keychain 保管，<strong>PassWallet 无法访问您的原始生物特征</strong>。</p>
-        </div>
+      <div class="section-header">
+        <div class="section-icon orange"><svg class="icon"><use href="#i-lock"/></svg></div>
+        <h2>数据安全如何保障？</h2>
+      </div>
+      <div class="card">
+        <h3>AES-256 加密</h3>
+        <p>您的所有敏感数据均使用 <strong style="color: var(--accent);">AES-256</strong> 算法进行本地加密。这意味着即使设备落入他人手中，未经您的主密码解锁，数据仍然完全不可读。</p>
+      </div>
+      <div class="card">
+        <h3>主密码保护</h3>
+        <p>主密码在设备本地经过 <strong style="color: var(--accent);">PBKDF2</strong> 密钥导出处理后，再用于加密您的数据。我们不会将主密码以任何形式传输、上传或存储。</p>
+      </div>
+      <div class="card">
+        <h3>生物识别安全</h3>
+        <p>Face ID / Touch ID 仅用于在您设备本地验证身份。生物特征数据由系统 Keychain 保管，<strong>PassWallet 无法访问您的原始生物特征</strong>。</p>
+      </div>
     </div>
-
     <div class="divider"></div>
-
     <div class="section fade-section">
-        <div class="section-header">
-            <div class="section-icon purple">💾</div>
-            <h2>备份与数据导出</h2>
-        </div>
-        <div class="card">
-            <h3>您的数据您做主</h3>
-            <p>您可以随时将数据导出为加密备份文件。该备份文件同样经过加密处理，<strong>只有您当前的主密码才能解密</strong>。</p>
-            <p style="margin-top: 10px;">我们建议您：</p>
-            <ul class="feature-list" style="margin-top: 8px;">
-                <li><span class="check blue">→</span><span>定期导出加密备份，保存到安全的云存储（如 iCloud Drive 私有文件夹）</span></li>
-                <li><span class="check blue">→</span><span>备份文件与主密码不要保存在同一位置</span></li>
-                <li><span class="check blue">→</span><span>如果更换设备，使用备份恢复功能迁移数据</span></li>
-            </ul>
-        </div>
+      <div class="section-header">
+        <div class="section-icon purple"><svg class="icon"><use href="#i-db"/></svg></div>
+        <h2>备份与数据导出</h2>
+      </div>
+      <div class="card">
+        <h3>您的数据您做主</h3>
+        <p>您可以随时将数据导出为加密备份文件。该备份文件同样经过加密处理，<strong>只有您当前的主密码才能解密</strong>。</p>
+        <p style="margin-top: 10px;">我们建议您：</p>
+        <ul class="feature-list" style="margin-top: 8px;">
+          <li><span class="check blue"><svg class="icon"><use href="#i-arrow-right"/></svg></span><span>定期导出加密备份，保存到安全的云存储（如 iCloud Drive 私有文件夹）</span></li>
+          <li><span class="check blue"><svg class="icon"><use href="#i-arrow-right"/></svg></span><span>备份文件与主密码不要保存在同一位置</span></li>
+          <li><span class="check blue"><svg class="icon"><use href="#i-arrow-right"/></svg></span><span>如果更换设备，使用备份恢复功能迁移数据</span></li>
+        </ul>
+      </div>
     </div>
-
     <div class="divider"></div>
-
     <div class="section fade-section">
-        <div class="section-header">
-            <div class="section-icon blue">🔄</div>
-            <h2>隐私声明更新</h2>
-        </div>
-        <div class="card">
-            <p>我们会根据产品功能的变化适时更新本隐私声明。当我们做出重大变更时，将在应用内通过明显的方式通知您，并在声明顶部更新"最近更新"日期。</p>
-            <p style="margin-top: 12px;">我们承诺：<strong style="color: var(--secondary);">本隐私声明中承诺的任何不收集、不上传政策，将永久保持不变。</strong></p>
-        </div>
+      <div class="section-header">
+        <div class="section-icon blue"><svg class="icon"><use href="#i-refresh"/></svg></div>
+        <h2>隐私声明更新</h2>
+      </div>
+      <div class="card">
+        <p>我们会根据产品功能的变化适时更新本隐私声明。当我们做出重大变更时，将在应用内通过明显的方式通知您，并在声明顶部更新"最近更新"日期。</p>
+        <p style="margin-top: 12px;">我们承诺：<strong style="color: var(--secondary);">本隐私声明中承诺的任何不收集、不上传政策，将永久保持不变。</strong></p>
+      </div>
     </div>
-
     <div class="divider"></div>
-
     <div class="section fade-section">
-        <div class="section-header">
-            <div class="section-icon green">📩</div>
-            <h2>联系我们</h2>
-        </div>
-        <div class="card">
-            <p>如果您对本隐私声明有任何疑问或顾虑，欢迎通过以下方式联系我们：</p>
-            <ul class="feature-list" style="margin-top: 12px;">
-                <li><span class="check blue">@</span><span>电子邮件：wangfei125@sina.cn</span></li>
-                <li><span class="check blue">💬</span><span>应用内反馈：设置 → 帮助与反馈</span></li>
-            </ul>
-            <p style="margin-top: 14px; color: var(--text-tertiary); font-size: 0.875rem;">我们将在 3 个工作日内回复您的邮件。</p>
-        </div>
+      <div class="section-header">
+        <div class="section-icon green"><svg class="icon"><use href="#i-mail"/></svg></div>
+        <h2>联系我们</h2>
+      </div>
+      <div class="card">
+        <p>如果您对本隐私声明有任何疑问或顾虑，欢迎通过以下方式联系我们：</p>
+        <ul class="feature-list" style="margin-top: 12px;">
+          <li><span class="check blue"><svg class="icon"><use href="#i-mail"/></svg></span><span>电子邮件：wangfei125@sina.cn</span></li>
+          <li><span class="check blue"><svg class="icon"><use href="#i-chat"/></svg></span><span>应用内反馈：设置 → 帮助与反馈</span></li>
+        </ul>
+        <p style="margin-top: 14px; color: var(--text-tertiary); font-size: 0.875rem;">我们将在 3 个工作日内回复您的邮件。</p>
+      </div>
     </div>
-
-</div>
-
-<footer class="footer">
+  </div>
+  <footer class="footer">
     <div class="footer-brand">PassWallet</div>
     <p>完全离线 · 本地加密 · 隐私至上</p>
     <p style="margin-top: 12px;">© 2026 PassWallet. 保留所有权利。</p>
-</footer>
-
-<script>
-    const sections = document.querySelectorAll('.fade-section');
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) entry.target.classList.add('visible');
-        });
-    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-    sections.forEach(section => observer.observe(section));
-</script>
-
+  </footer>
+  <script>
+    const sections = document.querySelectorAll('.fade-section');    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');      });    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });    sections.forEach(section => observer.observe(section));  </script>
 </body>
 </html>
